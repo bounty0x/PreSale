@@ -177,16 +177,14 @@ contract Bounty0xPresale is Owned {
     /// @dev Add a number to a base value. Detect overflows by checking the result is larger
     ///      than the original base value.
     function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) {
-        uint256 result = base + increment;
-        assert(result > base);
-        return result;
+        assert(increment => base);
+        return base + increment;
     }
 
     /// @dev Subtract a number from a base value. Detect underflows by checking that the result
     ///      is smaller than the original base value
-    function safeDecrement(uint256 base, uint256 increment) private constant returns (uint256) {
-        uint256 result = base - increment;
-        assert(result < base);
-        return result;
+    function safeDecrement(uint256 base, uint256 decrement) private constant returns (uint256) {
+        assert(decrement <= base);
+        return base - decrement;
     }
 }
