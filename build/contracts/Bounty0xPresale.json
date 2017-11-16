@@ -1,0 +1,311 @@
+{
+  "contract_name": "Bounty0xPresale",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "participantWithdrawIfMinimumFundingNotReached",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "MINIMUM_PARTICIPATION_AMOUNT",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerWithdraw",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "whitelistFilteringSwitch",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "PRESALE_MINIMUM_FUNDING",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "OWNER_CLAWBACK_DATE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "PRESALE_MAXIMUM_FUNDING",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "MAXIMUM_PARTICIPATION_AMOUNT",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "ownerClawback",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "PRESALE_END_DATE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "earlyParticipantWhitelist",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "name": "setEarlyParicipantWhitelist",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "PRESALE_START_DATE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalFunding",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": true,
+      "type": "constructor"
+    },
+    {
+      "payable": true,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogParticipation",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x60606040526000805460a060020a60ff021916740100000000000000000000000000000000000000001790555b5b60008054600160a060020a03191633600160a060020a03161790555b5b5b61079e8061005a6000396000f300606060405236156100e35763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416632350e76281146101a45780632e87edd9146101bc57806333f707d1146101e15780633f3cde05146101f9578063475ec95a1461020e5780635a4a04a71461023357806361962265146102585780636586bb251461027d57806370a08231146102a25780638da5cb5b146102d3578063b63e93dc14610302578063b644ee4114610317578063cb16e6d01461033c578063eac249321461036f578063f0b8000014610395578063fe47a8a7146103ba575b5b6359ef395042116100f457600080fd5b6359ef3e00421061010457600080fd5b67016345785d8a0000341161011857600080fd5b67347541f902fa0000341061012c57600080fd5b6829175cf7f1a2180000610142600154346103df565b1061014c57600080fd5b60005474010000000000000000000000000000000000000000900460ff161561019657600160a060020a03331660009081526003602052604090205460ff16151561019657600080fd5b5b6101a133346103f8565b5b005b34156101af57600080fd5b6101a160043561048d565b005b34156101c757600080fd5b6101cf610545565b60405190815260200160405180910390f35b34156101ec57600080fd5b6101a1600435610551565b005b341561020457600080fd5b6101a16105cc565b005b341561021957600080fd5b6101cf610632565b60405190815260200160405180910390f35b341561023e57600080fd5b6101cf61063e565b60405190815260200160405180910390f35b341561026357600080fd5b6101cf610646565b60405190815260200160405180910390f35b341561028857600080fd5b6101cf610653565b60405190815260200160405180910390f35b34156102ad57600080fd5b6101cf600160a060020a036004351661065f565b60405190815260200160405180910390f35b34156102de57600080fd5b6102e6610671565b604051600160a060020a03909116815260200160405180910390f35b341561030d57600080fd5b6101a1610680565b005b341561032257600080fd5b6101cf6106e9565b60405190815260200160405180910390f35b341561034757600080fd5b61035b600160a060020a03600435166106f1565b604051901515815260200160405180910390f35b341561037a57600080fd5b6101a1600160a060020a03600435166024351515610706565b005b34156103a057600080fd5b6101cf61074b565b60405190815260200160405180910390f35b34156103c557600080fd5b6101cf610753565b60405190815260200160405180910390f35b60008282018381116103ed57fe5b8091505b5092915050565b600160a060020a03821660009081526002602052604090205461041b90826103df565b600160a060020a03831660009081526002602052604090205560015461044190826103df565b600155600160a060020a0382167f0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca824260405191825260208201526040908101905180910390a25b5050565b6359ef3e0042101561049e57600080fd5b600154670de0b6b3a76400009011156104b657600080fd5b600160a060020a0333166000908152600260205260409020548190106104d857fe5b600160a060020a0333166000908152600260205260409020546104fb9082610759565b600160a060020a03331660008181526002602052604090819020929092559082156108fc0290839051600060405180830381858888f19350505050151561054157600080fd5b5b50565b67016345785d8a000081565b60005433600160a060020a0390811691161461056c57600080fd5b6359ef3e0042101561057d57600080fd5b600154670de0b6b3a7640000901161059457600080fd5b600054600160a060020a031681156108fc0282604051600060405180830381858888f19350505050151561054157600080fd5b5b5b50565b60005433600160a060020a039081169116146105e757600080fd5b60005474010000000000000000000000000000000000000000900460ff161561060f57600080fd5b6000805474ff0000000000000000000000000000000000000000191690555b5b5b565b670de0b6b3a764000081565b635a497a0081565b6829175cf7f1a218000081565b67347541f902fa000081565b60026020526000908152604090205481565b600054600160a060020a031681565b60005433600160a060020a0390811691161461069b57600080fd5b635a497a004210156106ac57600080fd5b600054600160a060020a039081169030163180156108fc0290604051600060405180830381858888f19350505050151561062e57600080fd5b5b5b565b6359ef3e0081565b60036020526000908152604090205460ff1681565b60005433600160a060020a0390811691161461072157600080fd5b600160a060020a0382166000908152600360205260409020805460ff19168215151790555b5b5050565b6359ef395081565b60015481565b60008183038381106103ed57fe5b8091505b50929150505600a165627a7a72305820cbf78d7be5fd88afee3eb137a3ac0ebac0dadb7754da73df380c716d2c829bcb0029",
+  "networks": {
+    "1508841450365": {
+      "events": {
+        "0x0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogParticipation",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x548484c94e9fa181102c76f74e102920a1f0a7b3",
+      "updated_at": 1508844793100
+    },
+    "1510874149566": {
+      "events": {
+        "0x0d0c0c5120500a67dc7f367c4b7f7afc5a39488be49264d6bd4a6c7e19b245ca": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogParticipation",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0319fd8d987c17fc09d01da3cd5fc41b44073a17",
+      "updated_at": 1510874158673
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1510874158673
+}
