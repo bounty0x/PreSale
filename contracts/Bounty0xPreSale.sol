@@ -3,9 +3,7 @@ pragma solidity ^0.4.15;
 contract Owned {
     address public owner;
 
-    function Owned() {
-        owner = msg.sender;
-    }
+    function Owned() { owner = msg.sender; }
 
     modifier onlyOwner() {
         require(msg.sender == owner);
@@ -73,7 +71,7 @@ contract Bounty0xPresale is Owned {
     /// @notice Events are not logged when the constructor is being executed during
     ///         deployment, so the preallocations will not be logged
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
-
+    
     function Bounty0xPresale () payable {
         //assertEquals(TOTAL_PREALLOCATION, msg.value);
         // Pre-allocations
@@ -91,6 +89,10 @@ contract Bounty0xPresale is Owned {
     /// @notice A participant's contribution will be rejected if the presale
     ///         has been funded to the maximum amount
     function () payable {
+        invest();
+    }
+    
+    function invest() public payable {
         // A participant cannot send funds before the presale start date
         require(now > PRESALE_START_DATE);
         // A participant cannot send funds after the presale end date
@@ -99,12 +101,12 @@ contract Bounty0xPresale is Owned {
         require(msg.value > MINIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send more than the maximum amount
         require(msg.value < MAXIMUM_PARTICIPATION_AMOUNT);
-        // A participant cannot send funds if the presale has been reached the maximum funding amount
-        require(safeIncrement(totalFunding, msg.value) < PRESALE_MAXIMUM_FUNDING);
         // If whitelist filtering is active, if so then check the contributor is in list of addresses
         if (isWhitelistingActive) {
             require(earlyParticipantWhitelist[msg.sender]);
         }
+        // A participant cannot send funds if the presale has been reached the maximum funding amount
+        require(safeIncrement(totalFunding, msg.value) < PRESALE_MAXIMUM_FUNDING);
         // Register the participant's contribution
         addBalance(msg.sender, msg.value);
     }
@@ -117,7 +119,7 @@ contract Bounty0xPresale is Owned {
         // The owner cannot withdraw if the presale did not reach the minimum funding amount
         require(totalFunding >= PRESALE_MINIMUM_FUNDING);
         // Withdraw the amount requested
-        require(owner.send(value));
+        owner.transfer(value);
     }
 
     /// @notice The participant will need to withdraw their funds from this contract if
@@ -132,7 +134,7 @@ contract Bounty0xPresale is Owned {
         // Participant's balance is reduced by the claimed amount.
         balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value);
         // Send ethers back to the participant's account
-        require(msg.sender.send(value));
+        msg.sender.transfer(value);
     }
 
     /// @notice The owner can clawback any ethers after a date in the future, so no
@@ -142,7 +144,7 @@ contract Bounty0xPresale is Owned {
         // The owner cannot withdraw before the clawback date
         require(now >= OWNER_CLAWBACK_DATE);
         // Send remaining funds back to the owner
-        require(owner.send(this.balance));
+        owner.transfer(this.balance);
     }
 
     // Set addresses in whitelist
