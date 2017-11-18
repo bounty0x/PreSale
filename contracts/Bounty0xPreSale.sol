@@ -51,14 +51,14 @@ contract Bounty0xPresale is Owned {
     // Public presale period
     // Starts Nov 10 2017 @ 12:00AM (UTC) 2017-11-10T12:00:00+00:00 in ISO 8601
     // Ends 1 weeks after the start
-    uint256 public constant PRESALE_START_DATE = 1510959660;
-    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 1 hours; //For testing purposes
+    uint256 public constant PRESALE_START_DATE = 1511005866;
+    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 1 days; //For testing purposes
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
     // minimum funding level is not reached
     // Jan 01 2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
-    uint256 public constant OWNER_CLAWBACK_DATE = 1514764800;
+    uint256 public constant OWNER_CLAWBACK_DATE = 1511103600;
 
     /// @notice Keep track of all participants contributions, including both the
     ///         preallocation and public phases
@@ -115,7 +115,7 @@ contract Bounty0xPresale is Owned {
         // The owner cannot withdraw before the presale ends
         require(now >= PRESALE_END_DATE);
         // The owner cannot withdraw if the presale did not reach the minimum funding amount
-        require(totalFunding > PRESALE_MINIMUM_FUNDING);
+        require(totalFunding >= PRESALE_MINIMUM_FUNDING);
         // Withdraw the amount requested
         require(owner.send(value));
     }
