@@ -32,14 +32,14 @@ contract Bounty0xPresale is Owned {
     // -------------------------------------------------------------------------------------
 
     // set whitelisting filter on/off
-    bool isWhitelistingActive = true;
+    bool private isWhitelistingActive = true;
 
     // Keep track of the total funding amount
     uint256 public totalFunding;
 
     // Minimum and maximum amounts per transaction for public participants
     uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   0.1 ether;
-    uint256 public constant MAXIMUM_PARTICIPATION_AMOUNT = 3.78 ether;
+    uint256 public MAXIMUM_PARTICIPATION_AMOUNT = 3.78 ether;
 
     // Minimum and maximum goals of the presale
     uint256 public constant PRESALE_MINIMUM_FUNDING =  1 ether;
@@ -51,8 +51,8 @@ contract Bounty0xPresale is Owned {
     // Public presale period
     // Starts Nov 10 2017 @ 12:00AM (UTC) 2017-11-10T12:00:00+00:00 in ISO 8601
     // Ends 1 weeks after the start
-    uint256 public constant PRESALE_START_DATE = 1510874687;
-    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 20 minutes; //For testing purposes 20 mins only
+    uint256 public constant PRESALE_START_DATE = 1510959660;
+    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 1 hours; //For testing purposes
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
@@ -77,8 +77,8 @@ contract Bounty0xPresale is Owned {
     function Bounty0xPresale () payable {
         //assertEquals(TOTAL_PREALLOCATION, msg.value);
         // Pre-allocations
-        //addBalance(0xdeadbeef, 10 wei);
-        //addBalance(0xcafebabe, 5 wei);
+        //addBalance(0xdeadbeef, 10 ether);
+        //addBalance(0xcafebabe, 5 ether);
         //assertEquals(TOTAL_PREALLOCATION, totalFunding);
     }
 
@@ -153,9 +153,10 @@ contract Bounty0xPresale is Owned {
     /// Ability to turn of whitelist filterin after 24 hours
     function whitelistFilteringSwitch() external onlyOwner {
         if (isWhitelistingActive) {
-            revert();
-        } else {
             isWhitelistingActive = false;
+            MAXIMUM_PARTICIPATION_AMOUNT = 30000 ether;
+        } else {
+            revert();
         }
     }
 
@@ -177,7 +178,7 @@ contract Bounty0xPresale is Owned {
     /// @dev Add a number to a base value. Detect overflows by checking the result is larger
     ///      than the original base value.
     function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) {
-        assert(increment => base);
+        assert(increment >= base);
         return base + increment;
     }
 
