@@ -47,7 +47,7 @@ contract Bounty0xPresale is Owned {
     uint256 public constant PRESALE_MAXIMUM_FUNDING = 705 ether;
 
     // Total preallocation in wei
-    //uint256 public constant TOTAL_PREALLOCATION = 15 ether;
+    uint256 public constant TOTAL_PREALLOCATION = 15 ether;
 
     // Public presale period
     // Starts Nov 20 2017 @ 14:00PM (UTC) 2017-11-20T14:00:00+00:00 in ISO 8601
@@ -128,7 +128,7 @@ contract Bounty0xPresale is Owned {
         // Participant cannot withdraw if the minimum funding amount has been reached
         require(totalFunding <= PRESALE_MINIMUM_FUNDING);
         // Participant can only withdraw an amount up to their contributed balance
-        assert(balanceOf[msg.sender] < value);
+        assert(balanceOf[msg.sender] >= value);
         // Participant's balance is reduced by the claimed amount.
         balanceOf[msg.sender] = safeSub(balanceOf[msg.sender], value);
         // Send ethers back to the participant's account
