@@ -75,12 +75,7 @@ contract Bounty0xPresale is Owned {
     ///         deployment, so the preallocations will not be logged
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
     
-    function Bounty0xPresale () {
-        //assertEquals(TOTAL_PREALLOCATION, msg.value);
-        // Pre-allocations
-        //addBalance(0xdeadbeef, 10 ether);
-        //addBalance(0xcafebabe, 5 ether);
-        //assertEquals(TOTAL_PREALLOCATION, totalFunding);
+    function Bounty0xPresale () payable {
     }
 
     /// @notice A participant sends a contribution to the contract's address
@@ -98,7 +93,7 @@ contract Bounty0xPresale is Owned {
         // A participant cannot send funds after the presale end date
         require(now < PRESALE_END_DATE);
         // A participant cannot send less than the minimum amount
-        require(msg.value > MINIMUM_PARTICIPATION_AMOUNT);
+        require(msg.value >= MINIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send more than the maximum amount
         require(msg.value <= MAXIMUM_PARTICIPATION_AMOUNT);
         // If whitelist filtering is active, if so then check the contributor is in list of addresses
@@ -106,7 +101,7 @@ contract Bounty0xPresale is Owned {
             require(earlyParticipantWhitelist[msg.sender]);
         }
         // A participant cannot send funds if the presale has been reached the maximum funding amount
-        require(safeIncrement(totalFunding, msg.value) <= PRESALE_MAXIMUM_FUNDING);
+        require(safeAdd(totalFunding, msg.value) <= PRESALE_MAXIMUM_FUNDING);
         // Register the participant's contribution
         addBalance(msg.sender, msg.value);    
     }
@@ -137,7 +132,7 @@ contract Bounty0xPresale is Owned {
         // Participant can only withdraw an amount up to their contributed balance
         assert(balanceOf[msg.sender] < value);
         // Participant's balance is reduced by the claimed amount.
-        balanceOf[msg.sender] = safeDecrement(balanceOf[msg.sender], value);
+        balanceOf[msg.sender] = safeAdd(balanceOf[msg.sender], value);
         // Send ethers back to the participant's account
         msg.sender.transfer(value);
     }
@@ -170,9 +165,9 @@ contract Bounty0xPresale is Owned {
     /// @dev Keep track of participants contributions and the total funding amount
     function addBalance(address participant, uint256 value) private {
         // Participant's balance is increased by the sent amount
-        balanceOf[participant] = safeIncrement(balanceOf[participant], value);
+        balanceOf[participant] = safeAdd(balanceOf[participant], value);
         // Keep track of the total funding amount
-        totalFunding = safeIncrement(totalFunding, value);
+        totalFunding = safeAdd(totalFunding, value);
         // Log an event of the participant's contribution
         LogParticipation(participant, value, now);
     }
@@ -182,17 +177,20 @@ contract Bounty0xPresale is Owned {
         assert(expectedValue == actualValue);
     }
 
-    /// @dev Add a number to a base value. Detect overflows by checking the result is larger
-    ///      than the original base value.
-    function safeIncrement(uint256 base, uint256 increment) private constant returns (uint256) {
-        assert(increment >= base);
-        return base + increment;
+    function safeMul(uint a, uint b) internal returns (uint) {
+        uint c = a * b;
+        assert(a == 0 || c / a == b);
+        return c;
     }
 
-    /// @dev Subtract a number from a base value. Detect underflows by checking that the result
-    ///      is smaller than the original base value
-    function safeDecrement(uint256 base, uint256 decrement) private constant returns (uint256) {
-        assert(decrement <= base);
-        return base - decrement;
+    function safeSub(uint a, uint b) internal returns (uint) {
+        assert(b <= a);
+        return a - b;
+    }
+
+    function safeAdd(uint a, uint b) internal returns (uint) {
+        uint c = a + b;
+        assert(c>=a && c>=b);
+        return c;
     }
 }
