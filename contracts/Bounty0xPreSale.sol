@@ -29,6 +29,9 @@ contract Bounty0xPresale is Owned {
     // 8. Remember to send the preallocated funds when deploying the contract!
     // -------------------------------------------------------------------------------------
 
+    // contract closed
+    bool private saleHasEnded = false;
+
     // set whitelisting filter on/off
     bool private isWhitelistingActive = true;
 
@@ -37,11 +40,11 @@ contract Bounty0xPresale is Owned {
 
     // Minimum and maximum amounts per transaction for public participants
     uint256 public constant MINIMUM_PARTICIPATION_AMOUNT =   0.1 ether;
-    uint256 public MAXIMUM_PARTICIPATION_AMOUNT = 3.78 ether;
+    uint256 public MAXIMUM_PARTICIPATION_AMOUNT = 3.53 ether;
 
     // Minimum and maximum goals of the presale
     uint256 public constant PRESALE_MINIMUM_FUNDING =  1 ether;
-    uint256 public constant PRESALE_MAXIMUM_FUNDING = 758 ether;
+    uint256 public constant PRESALE_MAXIMUM_FUNDING = 705 ether;
 
     // Total preallocation in wei
     //uint256 public constant TOTAL_PREALLOCATION = 15 ether;
@@ -50,7 +53,7 @@ contract Bounty0xPresale is Owned {
     // Starts Nov 20 2017 @ 14:00PM (UTC) 2017-11-20T14:00:00+00:00 in ISO 8601
     // Ends 1 weeks after the start
     uint256 public constant PRESALE_START_DATE = 1511186400;
-    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks; //For testing purposes
+    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks;
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
@@ -89,6 +92,7 @@ contract Bounty0xPresale is Owned {
     /// @notice A participant's contribution will be rejected if the presale
     ///         has been funded to the maximum amount
     function () payable {
+        require(!saleHasEnded);
         // A participant cannot send funds before the presale start date
         require(now > PRESALE_START_DATE);
         // A participant cannot send funds after the presale end date
@@ -110,12 +114,17 @@ contract Bounty0xPresale is Owned {
     /// @notice The owner can withdraw ethers after the presale has completed,
     ///         only if the minimum funding level has been reached
     function ownerWithdraw(uint256 value) external onlyOwner {
+        if (totalFunding >= PRESALE_MAXIMUM_FUNDING) {
+            owner.transfer(value);
+            saleHasEnded = true;
+        } else {
         // The owner cannot withdraw before the presale ends
         require(now >= PRESALE_END_DATE);
         // The owner cannot withdraw if the presale did not reach the minimum funding amount
         require(totalFunding >= PRESALE_MINIMUM_FUNDING);
         // Withdraw the amount requested
         owner.transfer(value);
+    }
     }
 
     /// @notice The participant will need to withdraw their funds from this contract if
