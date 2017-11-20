@@ -47,16 +47,16 @@ contract Bounty0xPresale is Owned {
     //uint256 public constant TOTAL_PREALLOCATION = 15 ether;
 
     // Public presale period
-    // Starts Nov 10 2017 @ 12:00AM (UTC) 2017-11-10T12:00:00+00:00 in ISO 8601
+    // Starts Nov 20 2017 @ 14:00PM (UTC) 2017-11-20T14:00:00+00:00 in ISO 8601
     // Ends 1 weeks after the start
-    uint256 public constant PRESALE_START_DATE = 1511005866;
-    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 1 days; //For testing purposes
+    uint256 public constant PRESALE_START_DATE = 1511186400;
+    uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks; //For testing purposes
 
     // Owner can clawback after a date in the future, so no ethers remain
     // trapped in the contract. This will only be relevant if the
     // minimum funding level is not reached
-    // Jan 01 2018 @ 12:00pm (UTC) 2018-01-01T12:00:00+00:00 in ISO 8601
-    uint256 public constant OWNER_CLAWBACK_DATE = 1511103600;
+    // Dec 13 @ 13:00pm (UTC) 2017-12-03T13:00:00+00:00 in ISO 8601
+    uint256 public constant OWNER_CLAWBACK_DATE = 1512306000;
 
     /// @notice Keep track of all participants contributions, including both the
     ///         preallocation and public phases
@@ -89,28 +89,24 @@ contract Bounty0xPresale is Owned {
     /// @notice A participant's contribution will be rejected if the presale
     ///         has been funded to the maximum amount
     function () payable {
-        invest();
-    }
-    
-    function invest() public payable {
         // A participant cannot send funds before the presale start date
         require(now > PRESALE_START_DATE);
         // A participant cannot send funds after the presale end date
         require(now < PRESALE_END_DATE);
         // A participant cannot send less than the minimum amount
-        require(msg.value > MINIMUM_PARTICIPATION_AMOUNT);
+        require(msg.value >= MINIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send more than the maximum amount
-        require(msg.value < MAXIMUM_PARTICIPATION_AMOUNT);
+        require(msg.value <= MAXIMUM_PARTICIPATION_AMOUNT);
         // If whitelist filtering is active, if so then check the contributor is in list of addresses
         if (isWhitelistingActive) {
             require(earlyParticipantWhitelist[msg.sender]);
         }
         // A participant cannot send funds if the presale has been reached the maximum funding amount
-        require(safeIncrement(totalFunding, msg.value) < PRESALE_MAXIMUM_FUNDING);
+        require(safeIncrement(totalFunding, msg.value) <= PRESALE_MAXIMUM_FUNDING);
         // Register the participant's contribution
-        addBalance(msg.sender, msg.value);
+        addBalance(msg.sender, msg.value);    
     }
-
+    
     /// @notice The owner can withdraw ethers after the presale has completed,
     ///         only if the minimum funding level has been reached
     function ownerWithdraw(uint256 value) external onlyOwner {
@@ -148,11 +144,11 @@ contract Bounty0xPresale is Owned {
     }
 
     // Set addresses in whitelist
-    function setEarlyParicipantWhitelist(address addr, bool status) onlyOwner {
+    function setEarlyParicipantWhitelist(address addr, bool status) external onlyOwner {
         earlyParticipantWhitelist[addr] = status;
     }
 
-    /// Ability to turn of whitelist filterin after 24 hours
+    /// Ability to turn of whitelist filtering after 24 hours
     function whitelistFilteringSwitch() external onlyOwner {
         if (isWhitelistingActive) {
             isWhitelistingActive = false;

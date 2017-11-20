@@ -20,8 +20,9 @@ contract('Bounty0xPreSale', function(accounts) {
     });
 
     it("Max cap should be 30000, post whitelist turn off,", function() {
+        var account_one = accounts[0];        
         return Bounty0xPreSale.deployed().then(function(contract) {
-            return contract.whitelistFilteringSwitch({from: '0xc242b49788caa7068800bc9b43588afeb797b11a'}).then(function() {
+            return contract.whitelistFilteringSwitch({from: account_one}).then(function() {
                 return contract.MAXIMUM_PARTICIPATION_AMOUNT.call().then(function (valueReturned) {
                     assert.equal(web3.fromWei(valueReturned.valueOf()), 30000);
                 });
