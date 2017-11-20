@@ -51,7 +51,7 @@ contract Bounty0xPresale is Owned {
 
     // Public presale period
     // Starts Nov 20 2017 @ 14:00PM (UTC) 2017-11-20T14:00:00+00:00 in ISO 8601
-    // Ends 1 weeks after the start
+    // Ends 2 weeks after the start
     uint256 public constant PRESALE_START_DATE = 1511186400;
     uint256 public constant PRESALE_END_DATE = PRESALE_START_DATE + 2 weeks;
 
@@ -63,8 +63,6 @@ contract Bounty0xPresale is Owned {
 
     /// @notice Keep track of all participants contributions, including both the
     ///         preallocation and public phases
-    /// @dev Name complies with ERC20 token standard, etherscan for example will recognize
-    ///      this and show the balances of the address
     mapping (address => uint256) public balanceOf;
 
     /// List of whitelisted participants
@@ -132,7 +130,7 @@ contract Bounty0xPresale is Owned {
         // Participant can only withdraw an amount up to their contributed balance
         assert(balanceOf[msg.sender] < value);
         // Participant's balance is reduced by the claimed amount.
-        balanceOf[msg.sender] = safeAdd(balanceOf[msg.sender], value);
+        balanceOf[msg.sender] = safeSub(balanceOf[msg.sender], value);
         // Send ethers back to the participant's account
         msg.sender.transfer(value);
     }
