@@ -97,6 +97,7 @@ contract Bounty0xPresale is Owned {
         // If whitelist filtering is active, if so then check the contributor is in list of addresses
         if (isWhitelistingActive) {
             require(earlyParticipantWhitelist[msg.sender]);
+            require(safeAdd(balanceOf[msg.sender], msg.value) <= MAXIMUM_PARTICIPATION_AMOUNT);
         }
         // A participant cannot send funds if the presale has been reached the maximum funding amount
         require(safeAdd(totalFunding, msg.value) <= PRESALE_MAXIMUM_FUNDING);
