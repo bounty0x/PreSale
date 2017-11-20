@@ -75,7 +75,7 @@ contract Bounty0xPresale is Owned {
     ///         deployment, so the preallocations will not be logged
     event LogParticipation(address indexed sender, uint256 value, uint256 timestamp);
     
-    function Bounty0xPresale () payable {
+    function Bounty0xPresale () {
         //assertEquals(TOTAL_PREALLOCATION, msg.value);
         // Pre-allocations
         //addBalance(0xdeadbeef, 10 ether);
@@ -98,7 +98,7 @@ contract Bounty0xPresale is Owned {
         // A participant cannot send funds after the presale end date
         require(now < PRESALE_END_DATE);
         // A participant cannot send less than the minimum amount
-        require(msg.value >= MINIMUM_PARTICIPATION_AMOUNT);
+        require(msg.value > MINIMUM_PARTICIPATION_AMOUNT);
         // A participant cannot send more than the maximum amount
         require(msg.value <= MAXIMUM_PARTICIPATION_AMOUNT);
         // If whitelist filtering is active, if so then check the contributor is in list of addresses
@@ -124,7 +124,7 @@ contract Bounty0xPresale is Owned {
         require(totalFunding >= PRESALE_MINIMUM_FUNDING);
         // Withdraw the amount requested
         owner.transfer(value);
-    }
+        }
     }
 
     /// @notice The participant will need to withdraw their funds from this contract if
